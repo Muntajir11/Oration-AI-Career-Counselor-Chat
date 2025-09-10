@@ -2,32 +2,37 @@ import { z } from "zod";
 import { router, procedure } from "../init";
 import { db, schema } from "../../db/index";
 import { eq, desc } from "drizzle-orm";
-import { nanoid } from "nanoid";
 
 export const chatRouter = router({
-  // Get all chat sessions
-  getSessions: procedure.query(async () => {
-    const sessions = await db
-      .select()
-      .from(schema.chatSessions)
-      .orderBy(desc(schema.chatSessions.updatedAt));
-    return sessions;
-  }),
+  // Get chat sessions for a specific user
+  getSessions: procedure
+    .input(z.object({ userId: z.string().optional() }).optional())
+    .query(async ({ input }) => {
+      if (!input?.userId) {
+        // Return empty array if no userId provided
+        return [];
+      }
+      
+      const sessions = await db
+        .select()
+        .from(schema.chatSessions)
+        .where(eq(schema.chatSessions.userId, input.userId))
+        .orderBy(desc(schema.chatSessions.updatedAt));
+      return sessions;
+    }),
 
   // Create a new chat session
   createSession: procedure
     .input(
       z.object({
         title: z.string().min(1),
-        userId: z.string().optional(),
+        userId: z.string(), // Required
       })
     )
     .mutation(async ({ input }) => {
-      const sessionId = nanoid();
       const newSession = await db
         .insert(schema.chatSessions)
         .values({
-          id: sessionId,
           title: input.title,
           userId: input.userId,
         })
@@ -57,11 +62,9 @@ export const chatRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      const messageId = nanoid();
       const newMessage = await db
         .insert(schema.messages)
         .values({
-          id: messageId,
           chatSessionId: input.sessionId,
           role: input.role,
           content: input.content,

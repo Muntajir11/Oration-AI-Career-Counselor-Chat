@@ -29,13 +29,13 @@ export function MessageInput({ onSendMessage, disabled }: MessageInputProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 p-4 border-t bg-white">
+    <form onSubmit={handleSubmit} className="flex gap-2 p-4 border-t bg-white dark:bg-gray-800 dark:border-gray-700">
       <Textarea
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Ask me anything about your career..."
-        className="flex-1 min-h-[60px] max-h-[120px] resize-none"
+        className="flex-1 min-h-[60px] max-h-[120px] resize-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400"
         disabled={disabled}
       />
       <Button
