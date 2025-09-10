@@ -7,10 +7,6 @@
   "regions": ["iad1"],
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "app/api/**/*.ts": {
-      "runtime": "nodejs20.x"
-    }
+  }
   }
 }
