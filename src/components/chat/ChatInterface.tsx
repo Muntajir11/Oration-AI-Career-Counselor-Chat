@@ -152,12 +152,12 @@ export function ChatInterface({ sessionId }: ChatInterfaceProps) {
   };
 
   return (
-    <Card className="h-[600px] flex flex-col">
+    <div className="h-full flex flex-col">
       <MessageList messages={messages} isLoading={isLoading} />
       <MessageInput 
         onSendMessage={handleSendMessage} 
         disabled={isLoading}
       />
-    </Card>
+    </div>
   );
 }

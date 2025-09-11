@@ -19,17 +19,17 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     >
       <div
         className={cn(
-          "max-w-[80%] rounded-lg px-4 py-2 text-sm",
+          "max-w-[75%] rounded-2xl px-5 py-3 text-sm leading-relaxed",
           isUser
-            ? "bg-blue-600 dark:bg-blue-700 text-white"
-            : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border dark:border-gray-600"
+            ? "bg-primary text-primary-foreground"
+            : "bg-card text-card-foreground border border-border"
         )}
       >
         <div className="whitespace-pre-wrap">{message.content}</div>
         <div
           className={cn(
-            "text-xs mt-1 opacity-70",
-            isUser ? "text-blue-100 dark:text-blue-200" : "text-gray-500 dark:text-gray-400"
+            "text-xs mt-2 opacity-70",
+            isUser ? "text-primary-foreground/70" : "text-muted-foreground"
           )}
         >
           {message.createdAt ? new Date(message.createdAt).toLocaleTimeString() : ""}

@@ -5,16 +5,22 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import { trpc } from "@/lib/trpc/client";
 
 export function UserManager() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, isLoading } = useAuth();
   const createUserMutation = trpc.user.createUser.useMutation();
   const checkUserQuery = trpc.user.checkUserExists.useQuery(
     { email: user?.email, supabaseId: user?.id },
-    { enabled: !!user && isAuthenticated }
+    { enabled: !!user && isAuthenticated && !isLoading }
   );
   const hasCheckedUser = useRef(false);
 
   useEffect(() => {
-    if (isAuthenticated && user && checkUserQuery.data && !hasCheckedUser.current) {
+    // Don't run if we're loading or not authenticated
+    if (isLoading || !isAuthenticated || !user) {
+      hasCheckedUser.current = false;
+      return;
+    }
+
+    if (checkUserQuery.data && !hasCheckedUser.current) {
       hasCheckedUser.current = true;
       
       const { exists, isActive } = checkUserQuery.data;
@@ -46,7 +52,7 @@ export function UserManager() {
         console.log('User authenticated and verified in database');
       }
     }
-  }, [isAuthenticated, user, checkUserQuery.data, createUserMutation, logout]);
+  }, [isAuthenticated, user, checkUserQuery.data, createUserMutation, logout, isLoading]);
 
   // Reset the check when user changes
   useEffect(() => {

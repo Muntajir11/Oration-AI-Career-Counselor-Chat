@@ -5,7 +5,14 @@ import { ComponentProps } from "react";
 
 export function ThemeProvider({ children, ...props }: ComponentProps<typeof NextThemesProvider>) {
   return (
-    <NextThemesProvider {...props}>
+    <NextThemesProvider 
+      {...props}
+      attribute="class"
+      defaultTheme="light"
+      enableSystem={false}
+      storageKey="career-counselor-theme"
+      disableTransitionOnChange={false}
+    >
       {children}
     </NextThemesProvider>
   );

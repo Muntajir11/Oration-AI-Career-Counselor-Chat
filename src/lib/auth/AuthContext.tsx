@@ -25,6 +25,8 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const mapSupabaseUser = (supabaseUser: SupabaseUser): User => ({
     id: supabaseUser.id,
@@ -35,6 +37,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Check if user is stored in localStorage first
     const checkStoredUser = async () => {
+      // Don't auto-login during logout process
+      if (isLoggingOut) return;
+      
+      // Check if we just logged out by looking for a logout flag
+      const isLoggedOut = sessionStorage.getItem('just_logged_out');
+      if (isLoggedOut) {
+        sessionStorage.removeItem('just_logged_out');
+        setIsLoading(false);
+        return;
+      }
+      
       try {
         const storedUser = localStorage.getItem("careercounselor_user");
         if (storedUser) {
@@ -58,11 +71,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     };
 
-    checkStoredUser();
+    // Only check stored user on initial mount
+    if (!isInitialized) {
+      checkStoredUser();
+      setIsInitialized(true);
+    }
 
     // Listen for Supabase auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        // Don't process auth changes during logout
+        if (isLoggingOut) return;
+        
         if (session?.user) {
           const mappedUser = mapSupabaseUser(session.user);
           setUser(mappedUser);
@@ -76,7 +96,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, []); // Remove dependencies to prevent re-running
+
+  // Separate effect to handle logout state changes
+  useEffect(() => {
+    if (isLoggingOut) {
+      // Clear user state immediately when logout starts
+      setUser(null);
+      localStorage.removeItem("careercounselor_user");
+    }
+  }, [isLoggingOut]);
 
   const login = (userData: User) => {
     setUser(userData);
@@ -110,34 +139,67 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async (): Promise<void> => {
     try {
-      setUser(null);
-      localStorage.removeItem("careercounselor_user");
+      // Set logging out state to prevent re-authentication
+      setIsLoggingOut(true);
+      setIsLoading(true);
       
-      // Sign out from Supabase with global scope to clear all sessions
-      const { error } = await supabase.auth.signOut({ scope: 'global' });
-      if (error) {
-        console.error("Supabase logout error:", error);
+      // Set a flag to prevent auto-login on next page load
+      sessionStorage.setItem('just_logged_out', 'true');
+      
+      // Immediately clear user state
+      setUser(null);
+      
+      // Clear localStorage but preserve theme setting
+      const themeData = localStorage.getItem('career-counselor-theme');
+      localStorage.clear();
+      if (themeData) {
+        localStorage.setItem('career-counselor-theme', themeData);
       }
       
-      // Additional cleanup: clear all auth-related cookies and storage
+      // Clear sessionStorage except our logout flag
+      const logoutFlag = sessionStorage.getItem('just_logged_out');
+      sessionStorage.clear();
+      if (logoutFlag) {
+        sessionStorage.setItem('just_logged_out', logoutFlag);
+      }
+      
+      // Clear all cookies
       document.cookie.split(";").forEach((c) => {
         const eqPos = c.indexOf("=");
-        const name = eqPos > -1 ? c.substr(0, eqPos) : c;
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+        const name = eqPos > -1 ? c.substr(0, eqPos).trim() : c.trim();
+        if (name) {
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=localhost`;
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.localhost`;
+        }
       });
       
-      // Clear sessionStorage as well
-      sessionStorage.clear();
+      // Sign out from Supabase with global scope
+      await supabase.auth.signOut({ scope: 'global' });
       
-      // Force page reload to ensure clean state
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 100);
+      // Wait to ensure cleanup is complete
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Force redirect to home page and reload to clear all state
+      window.location.href = '/';
+      
     } catch (error) {
       console.error("Error during logout:", error);
-      // Even if there's an error, redirect to home
+      // Even if there's an error, clear everything and redirect
+      setUser(null);
+      
+      // Clear localStorage but preserve theme setting
+      const themeData = localStorage.getItem('career-counselor-theme');
+      localStorage.clear();
+      if (themeData) {
+        localStorage.setItem('career-counselor-theme', themeData);
+      }
+      
+      sessionStorage.clear();
+      sessionStorage.setItem('just_logged_out', 'true');
       window.location.href = '/';
     }
+    // Don't reset isLoggingOut here - let the page reload handle it
   };
 
   // Temporary method for testing (same as login)

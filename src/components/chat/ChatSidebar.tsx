@@ -131,11 +131,11 @@ export function ChatSidebar({ selectedSessionId, onSessionSelect, onNewChat }: C
   };
 
   return (
-    <Card className="w-80 h-[600px] flex flex-col">
-      <div className="p-4 border-b">
+    <div className="h-full flex flex-col p-6">
+      <div className="mb-6">
         <Button 
           onClick={startNewChat} 
-          className="w-full" 
+          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 border-0" 
           variant="default"
           disabled={isAuthenticated && !user?.id}
         >
@@ -143,17 +143,18 @@ export function ChatSidebar({ selectedSessionId, onSessionSelect, onNewChat }: C
           New Chat
         </Button>
         {isAuthenticated && !user?.id && (
-          <p className="text-xs text-red-500 mt-1">Please log in again to create chats</p>
+          <p className="text-xs text-destructive mt-2">Please log in again to create chats</p>
         )}
       </div>
       
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto">
         {isCreating && (
-          <div className="mb-4 space-y-2">
+          <div className="mb-6 space-y-3 slide-in">
             <Input
               value={newChatTitle}
               onChange={(e) => setNewChatTitle(e.target.value)}
               placeholder="Enter chat title..."
+              className="chat-input bg-background/50 border-border/50 text-foreground placeholder:text-muted-foreground"
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleCreateSession();
                 if (e.key === "Escape") {
@@ -164,7 +165,7 @@ export function ChatSidebar({ selectedSessionId, onSessionSelect, onNewChat }: C
               autoFocus
             />
             <div className="flex gap-2">
-              <Button size="sm" onClick={handleCreateSession}>
+              <Button size="sm" onClick={handleCreateSession} className="bg-primary text-primary-foreground hover:bg-primary/90">
                 Create
               </Button>
               <Button 
@@ -174,6 +175,7 @@ export function ChatSidebar({ selectedSessionId, onSessionSelect, onNewChat }: C
                   setIsCreating(false);
                   setNewChatTitle("");
                 }}
+                className="border-border/50 text-foreground hover:bg-accent/50"
               >
                 Cancel
               </Button>
@@ -187,15 +189,15 @@ export function ChatSidebar({ selectedSessionId, onSessionSelect, onNewChat }: C
               key={session.id}
               onClick={() => onSessionSelect(session.id)}
               className={cn(
-                "flex items-center justify-between p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors",
-                selectedSessionId === session.id && "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700"
+                "flex items-center justify-between p-3 cursor-pointer hover:bg-accent rounded-lg transition-colors",
+                selectedSessionId === session.id ? "bg-accent" : ""
               )}
             >
               <div className="flex items-center flex-1 min-w-0">
-                <MessageSquare className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0" />
+                <MessageSquare className="h-4 w-4 mr-3 text-muted-foreground flex-shrink-0" />
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium truncate dark:text-gray-200">{session.title}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-sm font-medium truncate text-foreground">{session.title}</p>
+                  <p className="text-xs text-muted-foreground">
                     {session.createdAt ? new Date(session.createdAt).toLocaleDateString() : ""}
                   </p>
                 </div>
@@ -204,7 +206,7 @@ export function ChatSidebar({ selectedSessionId, onSessionSelect, onNewChat }: C
                 size="sm"
                 variant="ghost"
                 onClick={(e) => handleDeleteSession(session.id, e)}
-                className="h-8 w-8 p-0 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400"
+                className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
               >
                 <Trash2 className="h-3 w-3" />
               </Button>
@@ -213,13 +215,15 @@ export function ChatSidebar({ selectedSessionId, onSessionSelect, onNewChat }: C
         </div>
         
         {sessions.length === 0 && !isCreating && (
-          <div className="text-center text-gray-500 dark:text-gray-400 mt-8">
-            <MessageSquare className="h-12 w-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
-            <p className="text-sm">No chat sessions yet.</p>
-            <p className="text-xs">Click "New Chat" to get started!</p>
+          <div className="text-center text-muted-foreground mt-12 fade-in">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted/20 flex items-center justify-center">
+              <MessageSquare className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <p className="text-sm mb-1">No chat sessions yet.</p>
+            <p className="text-xs text-muted-foreground/70">Click "New Chat" to get started!</p>
           </div>
         )}
       </div>
-    </Card>
+    </div>
   );
 }

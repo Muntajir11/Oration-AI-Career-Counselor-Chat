@@ -10,6 +10,7 @@ import { trpc } from "@/lib/trpc/client";
 import { UserPlus, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -74,29 +75,36 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4 transition-colors duration-300">
+      {/* Theme toggle in top right */}
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+
       <div className="w-full max-w-md">
         <div className="mb-6">
           <Link 
             href="/" 
-            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900"
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back to Chat
           </Link>
         </div>
 
-        <Card>
+        <Card className="backdrop-blur-xl bg-card/80 border-border/50 shadow-xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Create Account</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-2xl bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+              Create Account
+            </CardTitle>
+            <CardDescription className="text-muted-foreground">
               Sign up to save your chat history and access it from anywhere
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-lg">
                   {error}
                 </div>
               )}
@@ -111,6 +119,7 @@ export default function SignupPage() {
                   placeholder="Enter your full name"
                   disabled={isLoading}
                   required
+                  className="bg-background/50 border-border/50"
                 />
               </div>
               
@@ -124,6 +133,7 @@ export default function SignupPage() {
                   placeholder="Enter your email"
                   disabled={isLoading}
                   required
+                  className="bg-background/50 border-border/50"
                 />
               </div>
               
@@ -137,6 +147,7 @@ export default function SignupPage() {
                   placeholder="Create a password (min 6 characters)"
                   disabled={isLoading}
                   required
+                  className="bg-background/50 border-border/50"
                 />
               </div>
               
@@ -150,12 +161,13 @@ export default function SignupPage() {
                   placeholder="Confirm your password"
                   disabled={isLoading}
                   required
+                  className="bg-background/50 border-border/50"
                 />
               </div>
               
               <Button 
                 type="submit" 
-                className="w-full" 
+                className="w-full professional-gradient text-white shadow-lg hover:shadow-xl transition-all duration-300" 
                 disabled={isLoading || isGoogleLoading}
               >
                 {isLoading ? (
@@ -171,17 +183,17 @@ export default function SignupPage() {
 
             <div className="mt-4 relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
+                <span className="w-full border-t border-border/50" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-500">Or continue with</span>
+                <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
 
             <Button
               type="button"
               variant="outline"
-              className="w-full mt-4"
+              className="w-full mt-4 border-border/50 hover:bg-accent/50 transition-colors"
               onClick={handleGoogleSignup}
               disabled={isLoading || isGoogleLoading}
             >
@@ -213,9 +225,9 @@ export default function SignupPage() {
             </Button>
             
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 Already have an account?{" "}
-                <Link href="/auth/login" className="text-blue-600 hover:underline">
+                <Link href="/auth/login" className="text-primary hover:underline transition-colors">
                   Sign in
                 </Link>
               </p>
