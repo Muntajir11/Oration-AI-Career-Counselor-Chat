@@ -14,73 +14,73 @@ Career Counselor AI is a comprehensive web application designed to provide users
 
 ```
 careercounselor/
-├── src/
-│   ├── app/                          # Next.js App Router directory
-│   │   ├── api/                      # API routes and endpoints
-│   │   │   ├── test-db/             # Database connectivity testing
-│   │   │   └── trpc/                # tRPC API configuration
-│   │   ├── auth/                     # Authentication pages
-│   │   │   ├── callback/            # OAuth callback handling
-│   │   │   ├── login/               # User login page
-│   │   │   └── signup/              # User registration page
-│   │   ├── favicon.ico              # Application favicon
-│   │   ├── globals.css              # Global CSS styles
-│   │   ├── layout.tsx               # Root layout component
-│   │   └── page.tsx                 # Home page component
-│   ├── components/                   # Reusable React components
-│   │   ├── auth/                    # Authentication-related components
-│   │   │   ├── AuthHeader.tsx       # Header with auth controls
-│   │   │   └── UserManager.tsx      # User state management
-│   │   ├── chat/                    # Chat interface components
-│   │   │   ├── ChatInterface.tsx    # Main chat container
-│   │   │   ├── ChatSidebar.tsx      # Session navigation sidebar
-│   │   │   ├── MessageBubble.tsx    # Individual message display
-│   │   │   ├── MessageInput.tsx     # Message input field
-│   │   │   └── MessageList.tsx      # Message list container
-│   │   ├── providers/               # Context providers
-│   │   │   └── theme-provider.tsx   # Theme management provider
-│   │   └── ui/                      # Shadcn/ui components
-│   │       ├── badge.tsx            # Badge component
-│   │       ├── button.tsx           # Button component
-│   │       ├── card.tsx             # Card component
-│   │       ├── input.tsx            # Input field component
-│   │       ├── label.tsx            # Label component
-│   │       ├── textarea.tsx         # Textarea component
-│   │       └── theme-toggle.tsx     # Light/dark mode toggle
-│   └── lib/                         # Utility libraries and configurations
-│       ├── ai/                      # AI service integrations
-│       │   ├── groq.ts              # Groq API configuration
-│       │   └── together.ts          # Together.ai API configuration
-│       ├── auth/                    # Authentication utilities
-│       │   └── AuthContext.tsx      # Authentication context provider
-│       ├── db/                      # Database configuration
-│       │   ├── index.ts             # Database connection setup
-│       │   └── schema.ts            # Database schema definitions
-│       ├── services/                # Business logic services
-│       │   └── chatService.ts       # Chat-related business logic
-│       ├── storage/                 # Storage utilities
-│       │   └── localStorage.ts      # Local storage management
-│       ├── supabase/                # Supabase configuration
-│       │   └── client.ts            # Supabase client setup
-│       ├── trpc/                    # tRPC configuration
-│       │   ├── client.ts            # tRPC client setup
-│       │   ├── init.ts              # tRPC initialization
-│       │   ├── provider.tsx         # tRPC React provider
-│       │   ├── root.ts              # Root router configuration
-│       │   └── routers/             # API route definitions
-│       │       ├── ai.ts            # AI-related API routes
-│       │       ├── chat.ts          # Chat-related API routes
-│       │       └── user.ts          # User-related API routes
-│       └── utils.ts                 # General utility functions
-├── drizzle/                         # Database migrations and metadata
-├── public/                          # Static assets (icons, images)
-├── components.json                  # Shadcn/ui configuration
-├── drizzle.config.ts               # Drizzle ORM configuration
-├── next.config.ts                  # Next.js configuration
-├── package.json                    # Project dependencies and scripts
-├── postcss.config.mjs              # PostCSS configuration
-├── tailwind.config.js              # Tailwind CSS configuration
-└── tsconfig.json                   # TypeScript configuration
+├── 📁 src/
+│   ├── 🚀 app/                          # Next.js App Router directory
+│   │   ├── 🔌 api/                      # API routes and endpoints
+│   │   │   ├── 🔍 test-db/             # Database connectivity testing
+│   │   │   └── ⚡ trpc/                # tRPC API configuration
+│   │   ├── 🔐 auth/                     # Authentication pages
+│   │   │   ├── 🔄 callback/            # OAuth callback handling
+│   │   │   ├── 🔑 login/               # User login page
+│   │   │   └── ✍️ signup/              # User registration page
+│   │   ├── 🌟 favicon.ico              # Application favicon
+│   │   ├── 🎨 globals.css              # Global CSS styles
+│   │   ├── 🏗️ layout.tsx               # Root layout component
+│   │   └── 🏠 page.tsx                 # Home page component
+│   ├── 🧩 components/                   # Reusable React components
+│   │   ├── 🔐 auth/                    # Authentication-related components
+│   │   │   ├── 📋 AuthHeader.tsx       # Header with auth controls
+│   │   │   └── 👤 UserManager.tsx      # User state management
+│   │   ├── 💬 chat/                    # Chat interface components
+│   │   │   ├── 🗨️ ChatInterface.tsx    # Main chat container
+│   │   │   ├── 📊 ChatSidebar.tsx      # Session navigation sidebar
+│   │   │   ├── 💭 MessageBubble.tsx    # Individual message display
+│   │   │   ├── ⌨️ MessageInput.tsx     # Message input field
+│   │   │   └── 📜 MessageList.tsx      # Message list container
+│   │   ├── 🔧 providers/               # Context providers
+│   │   │   └── 🌙 theme-provider.tsx   # Theme management provider
+│   │   └── 🎯 ui/                      # Shadcn/ui components
+│   │       ├── 🏷️ badge.tsx            # Badge component
+│   │       ├── 🔘 button.tsx           # Button component
+│   │       ├── 🃏 card.tsx             # Card component
+│   │       ├── 📝 input.tsx            # Input field component
+│   │       ├── 🏷️ label.tsx            # Label component
+│   │       ├── 📄 textarea.tsx         # Textarea component
+│   │       └── 🌗 theme-toggle.tsx     # Light/dark mode toggle
+│   └── 📚 lib/                         # Utility libraries and configurations
+│       ├── 🤖 ai/                      # AI service integrations
+│       │   ├── ⚡ groq.ts              # Groq API configuration
+│       │   └── 🤝 together.ts          # Together.ai API configuration
+│       ├── 🔐 auth/                    # Authentication utilities
+│       │   └── 🎭 AuthContext.tsx      # Authentication context provider
+│       ├── 🗄️ db/                      # Database configuration
+│       │   ├── 🔗 index.ts             # Database connection setup
+│       │   └── 📋 schema.ts            # Database schema definitions
+│       ├── ⚙️ services/                # Business logic services
+│       │   └── 💬 chatService.ts       # Chat-related business logic
+│       ├── 💾 storage/                 # Storage utilities
+│       │   └── 📦 localStorage.ts      # Local storage management
+│       ├── ☁️ supabase/                # Supabase configuration
+│       │   └── 🔌 client.ts            # Supabase client setup
+│       ├── ⚡ trpc/                    # tRPC configuration
+│       │   ├── 🔌 client.ts            # tRPC client setup
+│       │   ├── 🚀 init.ts              # tRPC initialization
+│       │   ├── 🎭 provider.tsx         # tRPC React provider
+│       │   ├── 🌐 root.ts              # Root router configuration
+│       │   └── 🛣️ routers/             # API route definitions
+│       │       ├── 🤖 ai.ts            # AI-related API routes
+│       │       ├── 💬 chat.ts          # Chat-related API routes
+│       │       └── 👤 user.ts          # User-related API routes
+│       └── 🛠️ utils.ts                 # General utility functions
+├── 🗃️ drizzle/                         # Database migrations and metadata
+├── 🖼️ public/                          # Static assets (icons, images)
+├── ⚙️ components.json                  # Shadcn/ui configuration
+├── 🐲 drizzle.config.ts               # Drizzle ORM configuration
+├── ⚙️ next.config.ts                  # Next.js configuration
+├── 📦 package.json                    # Project dependencies and scripts
+├── 🎨 postcss.config.mjs              # PostCSS configuration
+├── 🎨 tailwind.config.js              # Tailwind CSS configuration
+└── 📝 tsconfig.json                   # TypeScript configuration
 ```
 
 ## 🛠️ Technology Stack
