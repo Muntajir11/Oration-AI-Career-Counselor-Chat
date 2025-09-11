@@ -1,3 +1,19 @@
+/**
+ * Authentication Header Component
+ * 
+ * This component provides a consistent header across the application that displays
+ * authentication status, user information, and navigation controls. It adapts its
+ * content based on whether the user is authenticated or not.
+ * 
+ * Features:
+ * - Dynamic content based on authentication state
+ * - User profile display when authenticated
+ * - Login/signup buttons for unauthenticated users
+ * - Theme toggle functionality
+ * - Logout capability for authenticated users
+ * - Badge indicating chat saving status
+ */
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -8,14 +24,25 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import { LogIn, UserPlus, LogOut, Save } from "lucide-react";
 import Link from "next/link";
 
+/**
+ * AuthHeader Component
+ * 
+ * Renders a fixed header with authentication controls and application branding.
+ * Shows different content based on user authentication status.
+ * 
+ * @returns Responsive header with authentication and navigation controls
+ */
 export function AuthHeader() {
   const { user, isAuthenticated, logout } = useAuth();
 
+  // Authenticated user header with profile and logout
   if (isAuthenticated && user) {
     return (
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 bg-background/80 backdrop-blur-xl border-b border-border/50">
+        {/* Left side: Application branding and status */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-3">
+            {/* Application icon */}
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -23,11 +50,14 @@ export function AuthHeader() {
             </div>
             <h1 className="text-xl font-bold text-foreground">Career Counselor AI</h1>
           </div>
+          {/* Status badge indicating chat saving functionality */}
           <Badge variant="secondary" className="bg-green-500/20 text-green-600 dark:text-green-400 border-green-500/30 backdrop-blur-sm">
             <Save className="h-3 w-3 mr-1" />
             Chats Saved
           </Badge>
         </div>
+        
+        {/* Right side: User info and controls */}
         <div className="flex items-center space-x-4">
           <span className="text-sm text-muted-foreground">Welcome, {user.name || user.email}</span>
           <ThemeToggle />
@@ -45,10 +75,13 @@ export function AuthHeader() {
     );
   }
 
+  // Unauthenticated user header with login/signup options
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 bg-background/80 backdrop-blur-xl border-b border-border/50">
+      {/* Left side: Application branding and signup prompt */}
       <div className="flex items-center space-x-4">
         <div className="flex items-center space-x-3">
+          {/* Application icon */}
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -56,6 +89,7 @@ export function AuthHeader() {
           </div>
           <h1 className="text-xl font-bold text-foreground">Career Counselor AI</h1>
         </div>
+        {/* Signup prompt card */}
         <Card className="px-3 py-1 bg-amber-500/20 border-amber-500/30 backdrop-blur-sm">
           <p className="text-xs text-amber-600 dark:text-amber-300 flex items-center">
             <Save className="h-3 w-3 mr-1" />
@@ -63,6 +97,8 @@ export function AuthHeader() {
           </p>
         </Card>
       </div>
+      
+      {/* Right side: Authentication buttons and theme toggle */}
       <div className="flex items-center space-x-3">
         <ThemeToggle />
         <Link href="/auth/login">

@@ -1,3 +1,21 @@
+/**
+ * Login Page Component
+ * 
+ * This page provides user authentication functionality with both email/password
+ * and Google OAuth sign-in options. It handles form validation, error display,
+ * and user redirection after successful authentication.
+ * 
+ * Features:
+ * - Email and password authentication
+ * - Google OAuth integration
+ * - Form validation and error handling
+ * - Loading states for better UX
+ * - Theme toggle support
+ * - Navigation to signup page
+ * 
+ * @route /auth/login
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -12,19 +30,39 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
+/**
+ * LoginPage Component
+ * 
+ * Renders the login form with email/password and Google authentication options.
+ * Manages form state, validation, and authentication flow.
+ * 
+ * @returns Complete login page with form and authentication options
+ */
 export default function LoginPage() {
+  // Form state management
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState("");
   
+  // Authentication hooks and mutations
   const { simulateLogin, loginWithGoogle } = useAuth();
   const authenticateMutation = trpc.user.authenticate.useMutation();
   const router = useRouter();
 
+  /**
+   * Handle Email/Password Form Submission
+   * 
+   * Validates form inputs, authenticates user via tRPC mutation,
+   * and redirects to home page on success.
+   * 
+   * @param e - Form submission event
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Basic form validation
     if (!email || !password) {
       setError("Please fill in all fields");
       return;
@@ -34,12 +72,13 @@ export default function LoginPage() {
     setError("");
 
     try {
+      // Authenticate user via tRPC
       const user = await authenticateMutation.mutateAsync({
         email,
         password,
       });
       
-      // Use our custom login method
+      // Update authentication context and redirect
       simulateLogin(user);
       router.push("/");
     } catch (error: any) {
@@ -49,6 +88,12 @@ export default function LoginPage() {
     }
   };
 
+  /**
+   * Handle Google OAuth Login
+   * 
+   * Initiates Google OAuth flow through Supabase authentication.
+   * Manages loading state and error handling for OAuth process.
+   */
   const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
     setError("");
@@ -62,12 +107,13 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4 transition-colors duration-300">
-      {/* Theme toggle in top right */}
+      {/* Theme toggle positioned in top right corner */}
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
 
       <div className="w-full max-w-md">
+        {/* Navigation back to main chat interface */}
         <div className="mb-6">
           <Link 
             href="/" 
@@ -78,7 +124,9 @@ export default function LoginPage() {
           </Link>
         </div>
 
+        {/* Main login card with backdrop blur effect */}
         <Card className="backdrop-blur-xl bg-card/80 border-border/50 shadow-xl">
+          {/* Card header with title and description */}
           <CardHeader className="text-center">
             <CardTitle className="text-2xl bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
               Welcome Back
@@ -87,14 +135,18 @@ export default function LoginPage() {
               Sign in to your account to save and access your chat history
             </CardDescription>
           </CardHeader>
+          
           <CardContent>
+            {/* Email and password login form */}
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Error message display */}
               {error && (
                 <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-lg">
                   {error}
                 </div>
               )}
               
+              {/* Email input field */}
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -109,6 +161,7 @@ export default function LoginPage() {
                 />
               </div>
               
+              {/* Password input field */}
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
@@ -123,6 +176,7 @@ export default function LoginPage() {
                 />
               </div>
               
+              {/* Submit button with loading state */}
               <Button 
                 type="submit" 
                 className="w-full professional-gradient text-white shadow-lg hover:shadow-xl transition-all duration-300" 
@@ -139,6 +193,7 @@ export default function LoginPage() {
               </Button>
             </form>
 
+            {/* Divider for alternative login options */}
             <div className="mt-4 relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-border/50" />
@@ -148,6 +203,7 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {/* Google OAuth login button */}
             <Button
               type="button"
               variant="outline"
@@ -159,6 +215,7 @@ export default function LoginPage() {
                 "Signing in with Google..."
               ) : (
                 <>
+                  {/* Google logo SVG */}
                   <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
@@ -182,6 +239,7 @@ export default function LoginPage() {
               )}
             </Button>
             
+            {/* Link to signup page for new users */}
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}

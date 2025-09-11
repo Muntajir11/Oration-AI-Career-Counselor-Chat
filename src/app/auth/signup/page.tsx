@@ -1,3 +1,21 @@
+/**
+ * Signup Page Component
+ * 
+ * This page provides user registration functionality with both email/password
+ * and Google OAuth sign-up options. It includes form validation, password
+ * confirmation, and error handling for the registration process.
+ * 
+ * Features:
+ * - Email and password registration with confirmation
+ * - Google OAuth integration for quick signup
+ * - Comprehensive form validation
+ * - Loading states and error display
+ * - Theme toggle support
+ * - Navigation to login page
+ * 
+ * @route /auth/signup
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -12,6 +30,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
+/**
+ * SignupPage Component
+ * 
+ * Renders the registration form with email/password and Google authentication options.
+ * Manages form state, validation, and registration flow.
+ * 
+ * @returns Complete signup page with registration form and authentication options
+ */
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

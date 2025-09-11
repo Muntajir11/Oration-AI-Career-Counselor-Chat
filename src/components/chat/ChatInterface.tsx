@@ -1,3 +1,19 @@
+/**
+ * Chat Interface Component
+ * 
+ * This is the main chat interface that handles message display, input, and management
+ * for individual chat sessions. It provides real-time messaging functionality with
+ * support for both authenticated and guest users.
+ * 
+ * Features:
+ * - Session-based message management
+ * - Real-time message streaming
+ * - Local storage fallback for guest users
+ * - Message persistence and retrieval
+ * - Scrolling management for message lists
+ * - Integration with tRPC for API communication
+ */
+
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";

@@ -1,0 +1,15 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="16" cy="16" r="16" fill="#2563eb"/>
+  
+  <!-- Briefcase icon representing career -->
+  <rect x="8" y="12" width="16" height="10" rx="2" fill="white" stroke="none"/>
+  <rect x="8" y="12" width="16" height="2" fill="#dbeafe"/>
+  
+  <!-- Handle -->
+  <rect x="13" y="10" width="6" height="2" rx="1" fill="white"/>
+  
+  <!-- Person icon (simplified head and shoulders) -->
+  <circle cx="16" cy="8" r="2.5" fill="white"/>
+  <path d="M12 15c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="white" stroke-width="1.5" fill="none"/>
+</svg>
